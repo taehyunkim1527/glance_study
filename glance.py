@@ -51,5 +51,12 @@ def main(argv = None):
 
 ### create a local session to run training
 	config = tf.ConfigProto(allow_soft_placement=True)
-#condif.gpu_options.per_process_gpu_memory_fraction = 0.45
+#config.gpu_options.per_process_gpu_memory_fraction = 0.45
 	with tf.Session(config=config) as sess:
+### log the graph data
+		writer = tf.train.SummaryWriter(log_dir, sess.graph)  ### Only for graph. if i wanna summary some data, have to use the func 'writer.add_summary)
+### ckpt saver
+		saver = tf.train.Saver(max_to_keep=30)
+### start the queue runners
+		coord = tf.train.Coordinator
+		threads = tf.train.start_queue_runners(sess=sess, coord=coord)
